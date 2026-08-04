@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maps Impulso — Sua empresa encontrada por quem realmente procura</title>
+<meta name="description" content="A Maps Impulso coloca sua empresa no topo do Google Maps e das buscas locais. Mais ligações, mais clientes, mais resultado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#070f22;
+    --navy-900:#0d1b38;
+    --navy-800:#132752;
+    --blue-600:#2159ff;
+    --blue-500:#3d74ff;
+    --blue-100:#e8f0ff;
+    --amber-400:#ffb238;
+    --amber-500:#ff9d0f;
+    --paper:#f5f7fb;
+    --ink:#0e1524;
+    --slate:#5c6a84;
+    --slate-light:#93a0b8;
+    --line:#e3e8f1;
+    --whatsapp:#25d366;
+    --radius-lg:22px;
+    --radius-md:14px;
+    --radius-sm:9px;
+    --shadow-soft:0 20px 50px -20px rgba(13,27,56,0.25);
+    --shadow-btn:0 10px 30px -8px rgba(33,89,255,0.55);
+    --ease:cubic-bezier(.16,.84,.44,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:'Sora',sans-serif;font-weight:700;letter-spacing:-0.01em;color:var(--navy-950);}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  ul{list-style:none;}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px;}
+  section{position:relative;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12.5px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--blue-600);
+    background:var(--blue-100);
+    padding:7px 14px;border-radius:99px;
+    margin-bottom:18px;
+  }
+  .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--blue-600);flex-shrink:0;}
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+  .reveal-stagger > *{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+  .reveal-stagger.is-visible > *{opacity:1;transform:translateY(0);}
+  .reveal-stagger.is-visible > *:nth-child(1){transition-delay:.05s;}
+  .reveal-stagger.is-visible > *:nth-child(2){transition-delay:.15s;}
+  .reveal-stagger.is-visible > *:nth-child(3){transition-delay:.25s;}
+  .reveal-stagger.is-visible > *:nth-child(4){transition-delay:.35s;}
+  .reveal-stagger.is-visible > *:nth-child(5){transition-delay:.45s;}
+  .reveal-stagger.is-visible > *:nth-child(6){transition-delay:.55s;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .reveal,.reveal-stagger > *{opacity:1 !important;transform:none !important;transition:none !important;}
+    .pin-pulse, .pin-ring, .float-card, .hero-glow{animation:none !important;}
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    padding:15px 26px;border-radius:99px;font-weight:600;font-size:15px;
+    transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
+    white-space:nowrap;
+  }
+  .btn svg{flex-shrink:0;}
+  .btn-primary{
+    background:var(--whatsapp);color:#fff;
+    box-shadow:0 12px 26px -10px rgba(37,211,102,0.65);
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 34px -10px rgba(37,211,102,0.75);}
+  .btn-ghost{
+    background:rgba(255,255,255,0.08);color:#fff;
+    border:1px solid rgba(255,255,255,0.35);backdrop-filter:blur(6px);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,0.16);transform:translateY(-3px);}
+  .btn-dark{background:var(--navy-950);color:#fff;box-shadow:var(--shadow-btn);}
+  .btn-dark:hover{transform:translateY(-3px);}
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:18px 0;
+    transition:background .35s var(--ease), box-shadow .35s var(--ease), padding .35s var(--ease);
+  }
+  .nav.scrolled{background:rgba(7,15,34,0.85);backdrop-filter:blur(14px);box-shadow:0 8px 30px -12px rgba(0,0,0,0.4);padding:12px 0;}
+  .nav .container{display:flex;align-items:center;justify-content:space-between;}
+  .logo{
+    font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:#fff;
+    display:flex;align-items:center;gap:9px;letter-spacing:-0.01em;
+  }
+  .logo-mark{
+    width:30px;height:30px;border-radius:9px;
+    background:linear-gradient(135deg,var(--amber-400),var(--amber-500));
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .logo-mark svg{width:16px;height:16px;}
+  .logo span{color:var(--amber-400);}
+  .nav-links{display:flex;align-items:center;gap:34px;}
+  .nav-links a{
+    font-size:14.5px;font-weight:500;color:rgba(255,255,255,0.78);
+    transition:color .2s;
+  }
+  .nav-links a:hover{color:#fff;}
+  .nav-cta{display:flex;align-items:center;gap:16px;}
+  .nav .btn-primary{padding:11px 20px;font-size:14px;}
+  .nav-toggle{display:none;background:none;border:none;flex-direction:column;gap:5px;padding:4px;}
+  .nav-toggle span{width:22px;height:2px;background:#fff;border-radius:2px;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    background:radial-gradient(120% 140% at 15% 10%, var(--navy-800) 0%, var(--navy-900) 45%, var(--navy-950) 100%);
+    padding:150px 0 120px;
+    overflow:hidden;
+    color:#fff;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(60% 60% at 30% 30%, black, transparent 75%);
+    pointer-events:none;
+  }
+  .hero-glow{
+    position:absolute;width:640px;height:640px;border-radius:50%;
+    background:radial-gradient(closest-side, rgba(61,116,255,0.55), transparent 72%);
+    top:-220px;right:-160px;filter:blur(10px);
+    animation:glowShift 9s ease-in-out infinite alternate;
+  }
+  @keyframes glowShift{0%{transform:translate(0,0) scale(1);}100%{transform:translate(-30px,30px) scale(1.08);}}
+
+  .hero .container{
+    display:grid;grid-template-columns:1.08fr 0.92fr;gap:50px;align-items:center;position:relative;z-index:2;
+  }
+  .hero-title{
+    font-size:clamp(32px,4.4vw,54px);line-height:1.12;color:#fff;margin-bottom:22px;
+  }
+  .hero-title em{
+    font-style:normal;
+    background:linear-gradient(100deg,var(--amber-400),#ffd28a);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-sub{
+    font-size:17.5px;color:rgba(255,255,255,0.72);max-width:480px;margin-bottom:36px;
+  }
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:46px;}
+  .hero-proof{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .stars{display:flex;gap:3px;color:var(--amber-400);}
+  .hero-proof-text{font-size:13.5px;color:rgba(255,255,255,0.62);}
+  .hero-proof-text strong{color:#fff;}
+
+  /* hero visual: phone mock with map + pulsing pin */
+  .hero-visual{position:relative;display:flex;align-items:center;justify-content:center;height:520px;}
+  .map-card{
+    width:340px;height:430px;border-radius:28px;
+    background:linear-gradient(160deg,#101f42,#0a1730);
+    border:1px solid rgba(255,255,255,0.09);
+    box-shadow:0 40px 90px -30px rgba(0,0,0,0.65);
+    position:relative;overflow:hidden;
+    transform:rotate(2deg);
+  }
+  .map-card-grid{
+    position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size:34px 34px;
+  }
+  .map-road{
+    position:absolute;background:rgba(255,255,255,0.14);border-radius:4px;
+  }
+  .map-road.r1{width:100%;height:10px;top:38%;left:0;transform:rotate(-4deg);}
+  .map-road.r2{width:10px;height:100%;left:62%;top:0;transform:rotate(6deg);}
+  .pin-wrap{
+    position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .pin-ring{
+    position:absolute;border-radius:50%;border:2px solid var(--amber-400);opacity:0;
+    animation:pinRing 2.6s ease-out infinite;
+  }
+  .pin-ring.r2{animation-delay:.9s;}
+  @keyframes pinRing{
+    0%{width:16px;height:16px;opacity:.9;}
+    100%{width:150px;height:150px;opacity:0;}
+  }
+  .pin-pulse{
+    position:relative;width:52px;height:52px;border-radius:50% 50% 50% 0;
+    background:linear-gradient(135deg,var(--amber-400),var(--amber-500));
+    transform:rotate(-45deg);
+    box-shadow:0 14px 30px -8px rgba(255,178,56,0.7);
+    display:flex;align-items:center;justify-content:center;
+    animation:pinBob 2.8s ease-in-out infinite;
+  }
+  @keyframes pinBob{0%,100%{transform:rotate(-45deg) translateY(0);}50%{transform:rotate(-45deg) translateY(-8px);}}
+  .pin-pulse svg{transform:rotate(45deg);width:22px;height:22px;color:var(--navy-950);}
+
+  .float-card{
+    position:absolute;background:#fff;border-radius:14px;padding:12px 16px;
+    box-shadow:0 22px 46px -18px rgba(10,20,40,0.45);
+    display:flex;align-items:center;gap:10px;
+    animation:floaty 4.5s ease-in-out infinite;
+  }
+  .float-card.fc1{top:6%;left:-8%;animation-delay:.2s;}
+  .float-card.fc2{bottom:10%;right:-10%;animation-delay:1.1s;}
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+  .fc-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .fc1 .fc-icon{background:#fff3e0;color:var(--amber-500);}
+  .fc2 .fc-icon{background:#e8f8ee;color:#1fae63;}
+  .fc-title{font-size:12px;color:var(--slate);font-weight:500;}
+  .fc-value{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--navy-950);}
+
+  /* ---------- section headers ---------- */
+  .section-pad{padding:110px 0;}
+  .section-head{max-width:640px;margin:0 auto 64px;text-align:center;}
+  .section-head h2{font-size:clamp(26px,3.4vw,38px);margin-bottom:16px;}
+  .section-head p{color:var(--slate);font-size:16.5px;}
+  .section-head.align-left{margin:0 0 56px;text-align:left;}
+
+  /* ---------- como funciona ---------- */
+  .steps{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;
+  }
+  .steps::before{
+    content:"";position:absolute;top:29px;left:12.5%;right:12.5%;height:2px;
+    background:repeating-linear-gradient(90deg,var(--line) 0 10px, transparent 10px 18px);
+  }
+  .step{position:relative;padding:0 18px;text-align:left;}
+  .step-num{
+    width:58px;height:58px;border-radius:16px;
+    background:var(--navy-950);color:var(--amber-400);
+    font-family:'Sora',sans-serif;font-weight:700;font-size:19px;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;z-index:1;margin-bottom:22px;
+    box-shadow:0 14px 30px -12px rgba(10,20,40,0.5);
+  }
+  .step h3{font-size:17.5px;margin-bottom:9px;}
+  .step p{font-size:14.5px;color:var(--slate);}
+
+  /* ---------- serviços ---------- */
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .service-card{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);
+    padding:30px 26px;transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+  }
+  .service-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-soft);border-color:transparent;}
+  .service-icon{
+    width:50px;height:50px;border-radius:14px;
+    background:var(--blue-100);color:var(--blue-600);
+    display:flex;align-items:center;justify-content:center;margin-bottom:20px;
+  }
+  .service-card h3{font-size:17px;margin-bottom:9px;}
+  .service-card p{font-size:14.5px;color:var(--slate);}
+
+  /* ---------- benefícios ---------- */
+  .benefits{
+    background:var(--navy-950);border-radius:32px;color:#fff;
+    padding:70px 60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+    position:relative;overflow:hidden;
+  }
+  .benefits::before{
+    content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(closest-side, rgba(255,178,56,0.16), transparent 70%);
+    bottom:-160px;left:-120px;
+  }
+  .benefits-list{display:flex;flex-direction:column;gap:22px;position:relative;z-index:1;}
+  .benefit-item{display:flex;gap:16px;align-items:flex-start;}
+  .benefit-check{
+    width:30px;height:30px;border-radius:9px;flex-shrink:0;
+    background:rgba(255,178,56,0.15);color:var(--amber-400);
+    display:flex;align-items:center;justify-content:center;margin-top:2px;
+  }
+  .benefit-item h4{color:#fff;font-size:16.5px;margin-bottom:5px;font-family:'Sora',sans-serif;font-weight:700;}
+  .benefit-item p{color:rgba(255,255,255,0.62);font-size:14.5px;}
+
+  .stat-panel{
+    background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+    border-radius:22px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:30px;
+    position:relative;z-index:1;
+  }
+  .stat{text-align:left;}
+  .stat-num{
+    font-family:'Sora',sans-serif;font-weight:800;font-size:36px;
+    background:linear-gradient(100deg,#fff,var(--amber-400));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    display:block;margin-bottom:6px;
+  }
+  .stat-label{font-size:13px;color:rgba(255,255,255,0.6);}
+
+  /* ---------- faq ---------- */
+  .faq-list{max-width:760px;margin:0 auto;}
+  .faq-item{
+    border-bottom:1px solid var(--line);
+  }
+  .faq-q{
+    width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;
+    padding:24px 4px;text-align:left;font-family:'Sora',sans-serif;font-weight:600;font-size:16.5px;color:var(--navy-950);
+  }
+  .faq-q-icon{
+    width:30px;height:30px;border-radius:50%;background:var(--blue-100);color:var(--blue-600);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    transition:transform .35s var(--ease), background .35s var(--ease), color .35s var(--ease);
+  }
+  .faq-item.open .faq-q-icon{transform:rotate(45deg);background:var(--navy-950);color:var(--amber-400);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease);}
+  .faq-a-inner{padding:0 4px 24px;color:var(--slate);font-size:15px;max-width:640px;}
+
+  /* ---------- cta band ---------- */
+  .cta-band{
+    background:linear-gradient(120deg,var(--blue-600),var(--navy-900));
+    border-radius:32px;padding:64px 50px;text-align:center;color:#fff;position:relative;overflow:hidden;
+  }
+  .cta-band::before{
+    content:"";position:absolute;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,0.16) 1px, transparent 1px);
+    background-size:22px 22px;opacity:.4;
+  }
+  .cta-band h2{color:#fff;font-size:clamp(24px,3.2vw,32px);margin-bottom:14px;position:relative;}
+  .cta-band p{color:rgba(255,255,255,0.78);margin-bottom:30px;position:relative;}
+  .cta-band .btn{position:relative;}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--navy-950);color:rgba(255,255,255,0.65);padding:70px 0 30px;}
+  .footer-grid{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding-bottom:50px;border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .footer-brand p{font-size:14px;margin:16px 0 20px;max-width:280px;color:rgba(255,255,255,0.5);}
+  .footer-social{display:flex;gap:10px;}
+  .footer-social a{
+    width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.07);
+    display:flex;align-items:center;justify-content:center;transition:background .25s;
+  }
+  .footer-social a:hover{background:var(--amber-400);color:var(--navy-950);}
+  .footer-col h4{color:#fff;font-size:14px;margin-bottom:18px;font-family:'Sora',sans-serif;}
+  .footer-col ul{display:flex;flex-direction:column;gap:11px;}
+  .footer-col a{font-size:14px;color:rgba(255,255,255,0.55);transition:color .2s;}
+  .footer-col a:hover{color:var(--amber-400);}
+  .footer-bottom{
+    display:flex;justify-content:space-between;align-items:center;padding-top:26px;font-size:13px;color:rgba(255,255,255,0.4);flex-wrap:wrap;gap:10px;
+  }
+
+  /* ---------- floating whatsapp ---------- */
+  .wa-float{
+    position:fixed;bottom:26px;right:26px;z-index:200;
+    width:60px;height:60px;border-radius:50%;background:var(--whatsapp);
+    display:flex;align-items:center;justify-content:center;color:#fff;
+    box-shadow:0 14px 34px -10px rgba(37,211,102,0.8);
+    animation:waBounce 3.2s ease-in-out infinite;
+  }
+  .wa-float:hover{transform:scale(1.08);}
+  @keyframes waBounce{0%,80%,100%{transform:translateY(0);}90%{transform:translateY(-6px);}}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .hero .container{grid-template-columns:1fr;text-align:center;}
+    .hero-sub{margin-left:auto;margin-right:auto;}
+    .hero-actions,.hero-proof{justify-content:center;}
+    .hero-visual{height:420px;margin-top:20px;}
+    .steps{grid-template-columns:1fr 1fr;gap:36px;}
+    .steps::before{display:none;}
+    .services-grid{grid-template-columns:1fr 1fr;}
+    .benefits{grid-template-columns:1fr;padding:50px 30px;}
+    .stat-panel{grid-template-columns:1fr 1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:720px){
+    .nav-links{
+      position:fixed;top:0;right:0;height:100vh;width:240px;
+      background:var(--navy-950);flex-direction:column;justify-content:center;align-items:flex-start;
+      padding:40px;gap:26px;transform:translateX(100%);transition:transform .4s var(--ease);
+    }
+    .nav-links.open{transform:translateX(0);}
+    .nav-toggle{display:flex;}
+    .nav .btn-primary span{display:none;}
+    .services-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;gap:34px;}
+    .footer-bottom{flex-direction:column;align-items:flex-start;}
+    .hero{padding:120px 0 90px;}
+    .section-pad{padding:80px 0;}
+    .cta-band{padding:46px 26px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <a href="#top" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8Z" fill="#0d1b38"/><circle cx="12" cy="10" r="3" fill="#ffb238"/></svg>
+      </span>
+      Maps<span>Impulso</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#como-funciona">Como funciona</a></li>
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#beneficios">Benefícios</a></li>
+      <li><a href="#faq">Perguntas</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="https://wa.me/5516997628109?text=Ol%C3%A1!%20Quero%20colocar%20minha%20empresa%20no%20topo%20do%20Google%20Maps." target="_blank" rel="noopener">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.83.49 3.55 1.34 5.03L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2Zm0 18.13h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.53 3.69-8.22 8.24-8.22 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.81c0 4.53-3.69 8.22-8.23 8.22Zm4.51-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.24-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.99-1.22-.73-.66-1.23-1.46-1.37-1.71-.14-.24-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.36-.77-1.86-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.24-.87.86-.87 2.09 0 1.23.89 2.42 1.01 2.59.13.17 1.77 2.71 4.29 3.8.6.26 1.07.42 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29Z"/></svg>
+        <span>WhatsApp</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="eyebrow-dot"></span> Presença local no Google</span>
+      <h1 class="hero-title">Sua empresa encontrada por quem <em>realmente procura</em>.</h1>
+      <p class="hero-sub">A Maps Impulso otimiza seu perfil no Google Maps e nas buscas locais para transformar pesquisas em ligações, mensagens e clientes na porta do seu negócio.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://wa.me/5516997628109?text=Ol%C3%A1!%20Quero%20colocar%20minha%20empresa%20no%20topo%20do%20Google%20Maps." target="_blank" rel="noopener">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.83.49 3.55 1.34 5.03L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2Zm0 18.13h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.53 3.69-8.22 8.24-8.22 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.81c0 4.53-3.69 8.22-8.23 8.22Zm4.51-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.24-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.99-1.22-.73-.66-1.23-1.46-1.37-1.71-.14-.24-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.36-.77-1.86-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.24-.87.86-.87 2.09 0 1.23.89 2.42 1.01 2.59.13.17 1.77 2.71 4.29 3.8.6.26 1.07.42 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29Z"/></svg>
+          Falar no WhatsApp agora
+        </a>
+        <a class="btn btn-ghost" href="#como-funciona">Ver como funciona</a>
+      </div>
+      <div class="hero-proof">
+        <div class="stars">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6L12 2z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6L12 2z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6L12 2z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6L12 2z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6L12 2z"/></svg>
+        </div>
+        <span class="hero-proof-text"><strong>+300 empresas</strong> já apareceram no topo do Google</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="map-card">
+        <div class="map-card-grid"></div>
+        <div class="map-road r1"></div>
+        <div class="map-road r2"></div>
+        <div class="pin-wrap">
+          <div class="pin-ring r1"></div>
+          <div class="pin-ring r2"></div>
+          <div class="pin-pulse">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z" fill="currentColor"/><circle cx="12" cy="9" r="2.4" fill="#fff"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="float-card fc1">
+        <div class="fc-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6L12 2z"/></svg>
+        </div>
+        <div>
+          <div class="fc-value">4.9 / 5.0</div>
+          <div class="fc-title">Avaliação média</div>
+        </div>
+      </div>
+      <div class="float-card fc2">
+        <div class="fc-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l4-4 4 3 6-7 4 4"/></svg>
+        </div>
+        <div>
+          <div class="fc-value">+187%</div>
+          <div class="fc-title">Visualizações no perfil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- COMO FUNCIONA -->
+<section class="section-pad" id="como-funciona">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><span class="eyebrow-dot"></span> O caminho até o topo</span>
+      <h2>Como funciona</h2>
+      <p>Um processo simples, feito para colocar sua empresa na frente de quem já está pronto para comprar.</p>
+    </div>
+    <div class="steps reveal-stagger">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Diagnóstico</h3>
+        <p>Analisamos seu perfil no Google, concorrentes da região e as buscas que sua empresa está perdendo.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Otimização</h3>
+        <p>Ajustamos categorias, descrição, fotos e palavras-chave para o Google entender e recomendar seu negócio.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Impulso</h3>
+        <p>Aplicamos estratégias de avaliações, conteúdo e sinais locais que aceleram sua posição nos resultados.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Resultados</h3>
+        <p>Você acompanha, mês a mês, o crescimento em visualizações, cliques e contatos direto no relatório.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section class="section-pad" id="servicos" style="background:#fff;">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><span class="eyebrow-dot"></span> O que fazemos</span>
+      <h2>Serviços</h2>
+      <p>Tudo o que sua empresa precisa para dominar as buscas locais, em um só lugar.</p>
+    </div>
+    <div class="services-grid reveal-stagger">
+      <div class="service-card">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+        <h3>Otimização do Perfil no Google</h3>
+        <p>Configuração completa do seu perfil comercial para aparecer nas buscas certas, na região certa.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+        <h3>SEO Local</h3>
+        <p>Estratégias de palavras-chave e sinais de relevância para subir seu posicionamento no Google Maps.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6L12 2z"/></svg></div>
+        <h3>Gestão de Avaliações</h3>
+        <p>Aumento no volume e na qualidade das avaliações, com respostas que fortalecem sua reputação.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/></svg></div>
+        <h3>Anúncios no Google Maps</h3>
+        <p>Campanhas patrocinadas para aparecer no topo, mesmo antes do posicionamento orgânico decolar.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M15 9h3M15 13h3M4 19l5-4 3 2 4-4 4 3"/></svg></div>
+        <h3>Fotos e Conteúdo Profissional</h3>
+        <p>Produção de imagens e publicações que aumentam a confiança de quem encontra seu perfil.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></div>
+        <h3>Relatórios de Performance</h3>
+        <p>Números claros de visualizações, cliques, ligações e rotas até sua empresa, todo mês.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFÍCIOS -->
+<section class="section-pad" id="beneficios">
+  <div class="container">
+    <div class="benefits reveal">
+      <div>
+        <span class="eyebrow" style="background:rgba(255,178,56,0.14);color:var(--amber-400);">
+          <span class="eyebrow-dot" style="background:var(--amber-400);"></span> Por que a Maps Impulso
+        </span>
+        <h2 style="color:#fff;font-size:clamp(24px,3vw,32px);margin-bottom:26px;">Benefícios que aparecem no seu caixa, não só na tela</h2>
+        <div class="benefits-list">
+          <div class="benefit-item">
+            <div class="benefit-check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div><h4>Mais ligações e mensagens</h4><p>Clientes prontos para comprar encontram e entram em contato direto pelo seu perfil.</p></div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div><h4>Apareça antes da concorrência</h4><p>Ocupe as primeiras posições nas buscas por serviços como o seu, na sua região.</p></div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div><h4>Mais confiança com avaliações</h4><p>Um perfil bem avaliado converte melhor do que qualquer anúncio pago.</p></div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div>
+            <div><h4>Resultados mensuráveis</h4><p>Relatórios simples mostram exatamente o retorno de cada ajuste feito.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="stat-panel">
+        <div class="stat"><span class="stat-num">3.2x</span><span class="stat-label">Mais visualizações no perfil</span></div>
+        <div class="stat"><span class="stat-num">+90%</span><span class="stat-label">Aumento em avaliações positivas</span></div>
+        <div class="stat"><span class="stat-num">45 dias</span><span class="stat-label">Para os primeiros resultados</span></div>
+        <div class="stat"><span class="stat-num">+300</span><span class="stat-label">Empresas impulsionadas</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-pad" id="faq" style="background:#fff;">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><span class="eyebrow-dot"></span> Dúvidas comuns</span>
+      <h2>Perguntas frequentes</h2>
+      <p>Se a sua pergunta não estiver aqui, chama a gente no WhatsApp.</p>
+    </div>
+    <div class="faq-list reveal" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">Em quanto tempo eu vejo resultado?
+          <span class="faq-q-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Os primeiros sinais de melhora, como aumento de visualizações, costumam aparecer entre 30 e 45 dias. Ganhos consistentes de posição e contatos se consolidam entre o 2º e o 3º mês.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Preciso ter um site para contratar?
+          <span class="faq-q-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Não. Trabalhamos diretamente com o seu perfil no Google, que já funciona como sua vitrine principal nas buscas locais e no Maps.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Funciona para qualquer tipo de negócio?
+          <span class="faq-q-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Sim. Atendemos clínicas, lojas, restaurantes, prestadores de serviço e qualquer empresa que dependa de clientes da própria região.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Como é feito o pagamento?
+          <span class="faq-q-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Trabalhamos com planos mensais, sem contratos de fidelidade longos. Você acompanha o resultado e decide continuar mês a mês.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Vocês cuidam de tudo ou eu preciso fazer algo?
+          <span class="faq-q-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Cuidamos de toda a parte técnica e estratégica. Pedimos apenas fotos e algumas informações do seu negócio para deixar o perfil completo e autêntico.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="section-pad" style="padding-top:0;">
+  <div class="container">
+    <div class="cta-band reveal">
+      <h2>Pronto para ser encontrado hoje?</h2>
+      <p>Fale agora com nossa equipe e receba um diagnóstico gratuito do seu perfil no Google.</p>
+      <a class="btn btn-primary" href="https://wa.me/5516997628109?text=Ol%C3%A1!%20Quero%20colocar%20minha%20empresa%20no%20topo%20do%20Google%20Maps." target="_blank" rel="noopener">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.83.49 3.55 1.34 5.03L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2Zm0 18.13h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.53 3.69-8.22 8.24-8.22 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.81c0 4.53-3.69 8.22-8.23 8.22Zm4.51-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.24-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.99-1.22-.73-.66-1.23-1.46-1.37-1.71-.14-.24-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.36-.77-1.86-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.24-.87.86-.87 2.09 0 1.23.89 2.42 1.01 2.59.13.17 1.77 2.71 4.29 3.8.6.26 1.07.42 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29Z"/></svg>
+        Quero aparecer no topo
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="logo">
+          <span class="logo-mark">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8Z" fill="#0d1b38"/><circle cx="12" cy="10" r="3" fill="#ffb238"/></svg>
+          </span>
+          Maps<span>Impulso</span>
+        </a>
+        <p>Ajudamos empresas locais a serem encontradas por quem já está procurando, todos os dias, no Google.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7h2.4l.4-3H13.5V9c0-.9.3-1.5 1.7-1.5h1.4V4.9C16.3 4.8 15.3 4.7 14.2 4.7c-2.3 0-3.9 1.4-3.9 4V11H7.9v3h2.4v7h3.2Z"/></svg></a>
+          <a href="https://wa.me/5516997628109" aria-label="WhatsApp"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.83.49 3.55 1.34 5.03L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2Z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#como-funciona">Como funciona</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#beneficios">Benefícios</a></li>
+          <li><a href="#faq">Perguntas frequentes</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="#servicos">Otimização de Perfil</a></li>
+          <li><a href="#servicos">SEO Local</a></li>
+          <li><a href="#servicos">Gestão de Avaliações</a></li>
+          <li><a href="#servicos">Anúncios no Maps</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="https://wa.me/5516997628109">(16) 99762-8109</a></li>
+          <li><a href="mailto:contato@mapsimpulso.com.br">contato@mapsimpulso.com.br</a></li>
+          <li><a href="#">São Paulo, SP</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Maps Impulso. Todos os direitos reservados.</span>
+      <span>Feito para negócios que querem ser encontrados.</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/5516997628109?text=Ol%C3%A1!%20Quero%20colocar%20minha%20empresa%20no%20topo%20do%20Google%20Maps." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.83.49 3.55 1.34 5.03L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2Zm0 18.13h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.53 3.69-8.22 8.24-8.22 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.81c0 4.53-3.69 8.22-8.23 8.22Zm4.51-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.24-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.99-1.22-.73-.66-1.23-1.46-1.37-1.71-.14-.24-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.36-.77-1.86-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.24-.87.86-.87 2.09 0 1.23.89 2.42 1.01 2.59.13.17 1.77 2.71 4.29 3.8.6.26 1.07.42 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29Z"/></svg>
+</a>
+
+<script>
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Mobile menu toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(openItem => {
+        openItem.classList.remove('open');
+        openItem.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+</script>
+</body>
+</html>
