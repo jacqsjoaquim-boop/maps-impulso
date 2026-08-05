@@ -107,9 +107,13 @@
   .nav.scrolled{background:rgba(7,15,34,0.85);backdrop-filter:blur(14px);box-shadow:0 8px 30px -12px rgba(0,0,0,0.4);padding:12px 0;}
   .nav .container{display:flex;align-items:center;justify-content:space-between;}
   .logo{
-    font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:#fff;
-    display:flex;align-items:center;gap:9px;letter-spacing:-0.01em;
-  }
+    font-family:'Sora',sans-serif;
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    animation: logoFloat 3s ease-in-out infinite;
+}
   .logo-mark{
     width:30px;height:30px;border-radius:9px;
     background:linear-gradient(135deg,var(--amber-400),var(--amber-500));
